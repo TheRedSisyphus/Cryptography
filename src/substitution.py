@@ -114,15 +114,25 @@ class Vigenere(Code):
         self.key = CodedStr(lower_no_space(self.key))
 
     def code(self, message) -> str:
-        coded_str_message = CodedStr(lower_no_space(message))
+        coded_str_message = CodedStr(message.lower())
         len_key = len(self.key)
+        count_key = 0
         for i, _ in enumerate(coded_str_message):
-            coded_str_message[i] += self.key[i % len_key]
+            if coded_str_message[i] == ' ':
+                pass
+            else:
+                coded_str_message[i] += self.key[count_key % len_key]
+                count_key += 1
         return str(coded_str_message)
 
     def decode(self, message) -> str:
-        coded_str_message = CodedStr(message)
+        coded_str_message = CodedStr(message.lower())
         len_key = len(self.key)
+        count_key = 0
         for i, _ in enumerate(coded_str_message):
-            coded_str_message[i] -= self.key[i % len_key]
+            if coded_str_message[i] == ' ':
+                pass
+            else:
+                coded_str_message[i] -= self.key[count_key % len_key]
+                count_key += 1
         return str(coded_str_message)
