@@ -1,0 +1,164 @@
+<html><body><h1>src/utils.py</h1>Killed 94 out of 109 mutants<h2>Survived</h2>Survived mutation testing. These mutants show holes in your test suite.<h3>Mutant 98</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -1,7 +1,7 @@
+ from typing import OrderedDict, Union, Iterable
+ 
+ ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
+-ALPHABET_25_W = 'abcdefghijklmnopqrstuvxyz'  # 25 letters without 'w'
++ALPHABET_25_W = 'XXabcdefghijklmnopqrstuvxyzXX'  # 25 letters without 'w'
+ 
+ 
+ class NotInAlphabetError(Exception):
+</pre><h3>Mutant 99</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -1,7 +1,7 @@
+ from typing import OrderedDict, Union, Iterable
+ 
+ ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
+-ALPHABET_25_W = 'abcdefghijklmnopqrstuvxyz'  # 25 letters without 'w'
++ALPHABET_25_W = None  # 25 letters without 'w'
+ 
+ 
+ class NotInAlphabetError(Exception):
+</pre><h3>Mutant 100</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -8,7 +8,7 @@
+     pass
+ 
+ 
+-def alphabet_removal(alphabet: str = ALPHABET, remove: str = '') -> str:
++def alphabet_removal(alphabet: str = ALPHABET, remove: str = 'XXXX') -> str:
+     return ''.join([c for c in alphabet if c not in remove])
+ 
+ 
+</pre><h3>Mutant 101</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -9,7 +9,7 @@
+ 
+ 
+ def alphabet_removal(alphabet: str = ALPHABET, remove: str = '') -> str:
+-    return ''.join([c for c in alphabet if c not in remove])
++    return 'XXXX'.join([c for c in alphabet if c not in remove])
+ 
+ 
+ def lower_no_space(string) -> str:
+</pre><h3>Mutant 102</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -9,7 +9,7 @@
+ 
+ 
+ def alphabet_removal(alphabet: str = ALPHABET, remove: str = '') -> str:
+-    return ''.join([c for c in alphabet if c not in remove])
++    return ''.join([c for c in alphabet if c  in remove])
+ 
+ 
+ def lower_no_space(string) -> str:
+</pre><h3>Mutant 103</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -13,7 +13,7 @@
+ 
+ 
+ def lower_no_space(string) -> str:
+-    return string.lower().replace(" ", "")
++    return string.lower().replace("XX XX", "")
+ 
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+</pre><h3>Mutant 104</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -13,7 +13,7 @@
+ 
+ 
+ def lower_no_space(string) -> str:
+-    return string.lower().replace(" ", "")
++    return string.lower().replace(" ", "XXXX")
+ 
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+</pre><h3>Mutant 105</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -17,7 +17,7 @@
+ 
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+-    string_lower_no_space = string.lower().replace(" ", "")
++    string_lower_no_space = string.lower().replace("XX XX", "")
+     return ''.join(list(OrderedDict.fromkeys(string_lower_no_space)))  # remove duplicates and keep order
+ 
+ 
+</pre><h3>Mutant 106</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -17,7 +17,7 @@
+ 
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+-    string_lower_no_space = string.lower().replace(" ", "")
++    string_lower_no_space = string.lower().replace(" ", "XXXX")
+     return ''.join(list(OrderedDict.fromkeys(string_lower_no_space)))  # remove duplicates and keep order
+ 
+ 
+</pre><h3>Mutant 107</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -17,7 +17,7 @@
+ 
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+-    string_lower_no_space = string.lower().replace(" ", "")
++    string_lower_no_space = None
+     return ''.join(list(OrderedDict.fromkeys(string_lower_no_space)))  # remove duplicates and keep order
+ 
+ 
+</pre><h3>Mutant 108</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -18,7 +18,7 @@
+ 
+ def lower_no_space_no_duplicate(string) -> str:
+     string_lower_no_space = string.lower().replace(" ", "")
+-    return ''.join(list(OrderedDict.fromkeys(string_lower_no_space)))  # remove duplicates and keep order
++    return 'XXXX'.join(list(OrderedDict.fromkeys(string_lower_no_space)))  # remove duplicates and keep order
+ 
+ 
+ class Code:
+</pre><h3>Mutant 109</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -23,7 +23,7 @@
+ 
+ class Code:
+     def __init__(self, key: Union[str, int], alphabet: str = ALPHABET):
+-        self.alphabet = alphabet
++        self.alphabet = None
+         if isinstance(key, int) or isinstance(key, str):
+             self.key = key
+         else:
+</pre><h3>Mutant 112</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -27,7 +27,7 @@
+         if isinstance(key, int) or isinstance(key, str):
+             self.key = key
+         else:
+-            raise TypeError(f'key {key} must be an int or a string')
++            raise TypeError(f'XXkey {key} must be an int or a stringXX')
+ 
+     def code(self, message: str) -> str:
+         raise NotImplementedError
+</pre><h3>Mutant 203</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -144,7 +144,7 @@
+ 
+     def index(self, elem):
+         for i, c in enumerate(self):
+-            if c == elem:
++            if c != elem:
+                 return i
+         raise ValueError(f'{elem} is not in CodedStr')
+ 
+</pre><h3>Mutant 204</h3><pre>--- src/utils.py
++++ src/utils.py
+@@ -146,5 +146,5 @@
+         for i, c in enumerate(self):
+             if c == elem:
+                 return i
+-        raise ValueError(f'{elem} is not in CodedStr')
++        raise ValueError(f'XX{elem} is not in CodedStrXX')
+ 
+</pre></body></html>
