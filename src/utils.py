@@ -73,8 +73,8 @@ class CodedStr:
         for elem in self.mes:
             if elem == ' ':
                 output += ' '
-            elif (type(elem) == int) and (0 <= elem <= self.cycle - 1):
-                output += self.alphabet[elem]
+            elif type(elem) == int:
+                output += self.alphabet[elem % self.cycle]
             else:
                 raise NotInAlphabetError(f'Invalid value {elem} in {self.alphabet}')
         return output
@@ -113,7 +113,7 @@ class CodedStr:
         for i, elem in enumerate(self.mes):
             if elem == ' ':
                 output += elem
-            elif (type(elem) == int) and (0 <= elem <= self.cycle - 1):
+            elif type(elem) == int:
                 output += self.alphabet[(-elem) % self.cycle]
             else:
                 raise NotInAlphabetError(f'Invalid value {elem} in {self.alphabet}')
@@ -123,7 +123,7 @@ class CodedStr:
         for i, elem in enumerate(self.mes):
             if elem == ' ':
                 pass
-            elif (type(elem) == int) and (0 <= elem <= self.cycle - 1):
+            elif type(elem) == int:
                 self[i] = (elem + key) % self.cycle
             else:
                 raise NotInAlphabetError(f'Invalid value {elem} in {self.alphabet}')
@@ -133,7 +133,7 @@ class CodedStr:
         for i, elem in enumerate(self.mes):
             if elem == ' ':
                 pass
-            elif (type(elem) == int) and (0 <= elem <= self.cycle - 1):
+            elif type(elem) == int:
                 self[i] = (elem - key) % self.cycle
             else:
                 raise NotInAlphabetError(f'Invalid value {elem} in {self.alphabet}')

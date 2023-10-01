@@ -82,22 +82,6 @@ def test_str():
     assert str(code) == 'bcdefza '
 
 
-def test_str_not_in_alphabet_0():
-    code = CodedStr(mes=[1, 2, 28, ' '])
-    code[2] = 26
-    with pytest.raises(NotInAlphabetError) as e_info:
-        str(code)
-    assert 'Invalid value 26 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
-def test_str_not_in_alphabet_1():
-    code = CodedStr(mes=[1, 2, 28, ' '])
-    code[2] = -1
-    with pytest.raises(NotInAlphabetError) as e_info:
-        str(code)
-    assert 'Invalid value -1 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
 def test_eq():
     code = CodedStr(mes=[1, 2, 3, 4, 5, 6])
     code_2 = CodedStr(mes='bcdefg')
@@ -141,55 +125,16 @@ def test_neg():
     assert -code == code_minus
 
 
-def test_neg_not_in_alphabet_0():
-    code = CodedStr(mes=[1, 2, 28, ' '])
-    code[2] = 26
-    with pytest.raises(NotInAlphabetError) as e_info:
-        -code
-    assert 'Invalid value 26 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
-def test_neg_not_in_alphabet_1():
-    code = CodedStr(mes=[1, 2, 28, ' '])
-    code[2] = -1
-    with pytest.raises(NotInAlphabetError) as e_info:
-        -code
-    assert 'Invalid value -1 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
 def test_iadd():
     code = CodedStr(mes='abc dz')
     code += 2
     assert code == CodedStr(mes='cde fb')
 
 
-def test_iadd_not_in_alphabet():
-    code = CodedStr(mes='abc dz')
-    code[0] = 27
-    with pytest.raises(NotInAlphabetError) as e_info:
-        code += 1
-    assert 'Invalid value 27 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
 def test_isub():
     code = CodedStr(mes='azcdefb ')
     code -= 2
     assert code == CodedStr(mes='yxabcdz ')
-
-
-def test_isub_not_in_alphabet_0():
-    code = CodedStr(mes='abc dz')
-    code[0] = 26
-    with pytest.raises(NotInAlphabetError) as e_info:
-        code -= 1
-    assert 'Invalid value 26 in abcdefghijklmnopqrstuvwxyz' == str(e_info.value)
-
-
-def test_isub_not_in_alphabet_1():
-    code = CodedStr(mes='abc dz')
-    code[0] = -1
-    with pytest.raises(NotInAlphabetError):
-        code -= 1
 
 
 def test_revert():
