@@ -4,6 +4,8 @@ from src.utils import lower_no_space_no_duplicate, Code, lower_no_space, ALPHABE
     alphabet_removal
 
 
+# Todo : faire une gestion des espaces et des majuscules dans les Code et les CodedStr
+
 class Cesar(Code):
     def __init__(self, key: int, alphabet: str = ALPHABET):
         super().__init__(key, alphabet)
@@ -28,12 +30,13 @@ class Bazaar(Code):
             raise TypeError(f'key {key} must be a string')
 
     def code(self, message: str) -> str:
-        coded = CodedStr(lower_no_space_no_duplicate(message))
-        return str(CodedStr([self.key[elem] for elem in coded]))
+        coded = CodedStr(lower_no_space(message))
+        return str(CodedStr(''.join([self.key[elem] for elem in coded])))
 
     def decode(self, message: str) -> str:
-        coded = CodedStr(lower_no_space_no_duplicate(message))
-        return str(CodedStr([self.key.index(elem) for elem in coded]))
+        coded = CodedStr(lower_no_space(message))
+        print([self.key.index(self.alphabet[elem]) for elem in coded])
+        return str(CodedStr([self.key.index(self.alphabet[elem]) for elem in coded]))
 
 
 class Polybe(Code):
@@ -44,6 +47,8 @@ class Polybe(Code):
         else:
             self.key = list(lower_no_space_no_duplicate(self.key))
             len_key = len(self.key)
+            if len_key == 0:
+                raise ValueError('Key cannot be empty')
             square = []
             len_square = ceil(sqrt(len_key))
             for i, letter in enumerate(self.key):
@@ -112,6 +117,8 @@ class Vigenere(Code):
         super().__init__(key, alphabet)
         if not isinstance(key, str):
             raise TypeError(f'key {key} must be a string')
+        if len(key) == 0:
+            raise ValueError('Key cannot be empty')
         self.key = CodedStr(lower_no_space(self.key))
 
     def code(self, message) -> str:
