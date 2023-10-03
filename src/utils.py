@@ -1,14 +1,13 @@
 from typing import OrderedDict, Union, Iterable
 
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
-ALPHABET_25_W = 'abcdefghijklmnopqrstuvxyz'  # 25 letters without 'w'
 
 
 class NotInAlphabetError(Exception):
     pass
 
 
-def alphabet_removal(alphabet: str = ALPHABET, remove: str = '') -> str:
+def alphabet_removal(remove: str, alphabet: str = ALPHABET, ) -> str:
     return ''.join([c for c in alphabet if c not in remove])
 
 

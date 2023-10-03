@@ -1,6 +1,7 @@
 from math import ceil, sqrt
 
-from src.utils import ALPHABET_25_W, lower_no_space_no_duplicate, Code, lower_no_space, ALPHABET, CodedStr
+from src.utils import lower_no_space_no_duplicate, Code, lower_no_space, ALPHABET, CodedStr, \
+    alphabet_removal
 
 
 class Cesar(Code):
@@ -36,7 +37,7 @@ class Bazaar(Code):
 
 
 class Polybe(Code):
-    def __init__(self, key: str, alphabet=ALPHABET_25_W):
+    def __init__(self, key: str, alphabet=alphabet_removal('w', ALPHABET)):
         super().__init__(key, alphabet)
         if not isinstance(self.key, str):
             raise TypeError(f'key {key} must be a string')
