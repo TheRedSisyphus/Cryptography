@@ -8,11 +8,18 @@ class NotInAlphabetError(Exception):
 
 
 def alphabet_removal(remove: str, alphabet: str = ALPHABET, ) -> str:
-    return ''.join([c for c in alphabet if c not in remove])
+    to_remove = remove.replace(" ", "")
+    if not set(to_remove).issubset(set(alphabet)):
+        raise ValueError(f'Trying to remove characters not in alphabet : {[c for c in to_remove if c not in alphabet]}')
+    return ''.join([c for c in alphabet if c not in to_remove])
 
 
 def lower_no_space(string) -> str:
     return string.lower().replace(" ", "")
+
+
+def has_duplicate(string) -> bool:
+    return len(set(string)) != len(string)
 
 
 def lower_no_space_no_duplicate(string) -> str:
@@ -22,6 +29,8 @@ def lower_no_space_no_duplicate(string) -> str:
 
 class Code:
     def __init__(self, key: Union[str, int], alphabet: str = ALPHABET):
+        if has_duplicate(alphabet):
+            raise ValueError(f"alphabet can't have duplicate")
         self.alphabet = alphabet
         if isinstance(key, int) or isinstance(key, str):
             self.key = key

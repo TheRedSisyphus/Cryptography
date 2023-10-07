@@ -1,4 +1,4 @@
-from math import ceil, sqrt
+from math import sqrt
 
 from src.utils import lower_no_space_no_duplicate, Code, lower_no_space, ALPHABET, CodedStr, \
     alphabet_removal
@@ -40,30 +40,37 @@ class Bazaar(Code):
 
 
 class Polybe(Code):
-    def __init__(self, key: str, alphabet=alphabet_removal('w', ALPHABET)):
+    default_alphabet = alphabet_removal('w', ALPHABET)
+
+    def __init__(self, key: str, alphabet=default_alphabet):
         super().__init__(key, alphabet)
+        if sqrt(len(self.alphabet)) != int(sqrt(len(self.alphabet))):
+            raise ValueError(f'alphabet length must be perfect square, got {len(self.alphabet)}')
         if not isinstance(self.key, str):
             raise TypeError(f'key {key} must be a string')
-        else:
-            self.key = list(lower_no_space_no_duplicate(self.key))
-            len_key = len(self.key)
-            if len_key == 0:
-                raise ValueError('Key cannot be empty')
-            square = []
-            len_square = ceil(sqrt(len_key))
-            for i, letter in enumerate(self.key):
-                if i % len_square == 0:
+        if not set(self.key).issubset(set(self.alphabet)):
+            raise ValueError(f'key must be in alphabet {[c for c in self.key if c not in self.alphabet]}')
+
+        self.key = list(lower_no_space_no_duplicate(self.key))
+        len_key = len(self.key)
+        if len_key == 0:
+            raise ValueError('Key cannot be empty')
+
+        square = []
+        len_square = int(sqrt(len(self.alphabet)))
+        for i, letter in enumerate(self.key):
+            if i % len_square == 0:
+                square.append([])
+            square[i // len_square].append(letter)
+
+        missing_letters = [c for c in alphabet if c not in self.key]
+        if missing_letters:
+            for i, letter in enumerate(missing_letters):
+                if (i + len_key) % len_square == 0:
                     square.append([])
-                square[i // len_square].append(letter)
+                square[(i + len_key) // len_square].append(letter)
 
-            if len_key < len(alphabet):
-                missing_letters = [c for c in alphabet if c not in self.key]
-                for i, letter in enumerate(missing_letters):
-                    if (i + len_key) % len_square == 0:
-                        square.append([])
-                    square[(i + len_key) // len_square].append(letter)
-
-            self.square = square
+        self.square = square
 
     def __repr__(self):
         return str(self.square)
@@ -82,17 +89,12 @@ class Polybe(Code):
             if c == ' ':
                 pass
             else:
-                match = False
+                if c not in set([elem for row in self.square for elem in row]):
+                    raise ValueError(f'Character {c} of message not found in Polybe square {self.square}')
                 for r, row in enumerate(self.square):
                     for e, elem in enumerate(row):
                         if elem == c:
                             output += f'{r + 1}{e + 1} '
-                            match = True
-                            break
-                    if match:
-                        break
-                if not match:
-                    raise ValueError(f'Character {c} is not in {self.square}')
 
         return output
 
