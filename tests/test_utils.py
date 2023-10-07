@@ -6,8 +6,14 @@ from src.utils import NotInAlphabetError
 
 # Test utils function
 
-def test_alphabet_removal():
-    assert utils.alphabet_removal(remove='az 1 ç', alphabet=utils.ALPHABET) == 'bcdefghijklmnopqrstuvwxy'
+def test_alphabet_removal_0():
+    assert utils.alphabet_removal(remove='az', alphabet=utils.ALPHABET) == 'bcdefghijklmnopqrstuvwxy'
+
+
+def test_alphabet_removal_1():
+    with pytest.raises(ValueError) as e:
+        utils.alphabet_removal(remove='az 1 ç', alphabet=utils.ALPHABET)
+    assert str(e.value) == "Trying to remove characters not in alphabet : ['1', 'ç']"
 
 
 def test_lower_no_space():
@@ -34,6 +40,12 @@ def test_Code_init_2():
     with pytest.raises(TypeError) as e:
         _ = utils.Code(key=None)
     assert str(e.value) == 'key None must be an int or a string'
+
+
+def test_Code_init_3():
+    with pytest.raises(ValueError) as e:
+        _ = utils.Code(key=1, alphabet='123451')
+    assert str(e.value) == "alphabet can't have duplicate"
 
 
 def test_Code_code():

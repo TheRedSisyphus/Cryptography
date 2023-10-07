@@ -77,16 +77,29 @@ def test_polybe_wrong_init_1():
     assert str(e.value) == 'Key cannot be empty'
 
 
-def test_polybe_code_0():
-    code_c = s.Polybe(key=alphabet_removal(alphabet=ALPHABET, remove='p'))
+def test_polybe_wrong_init_2():
     with pytest.raises(ValueError) as e:
-        code_c.code('pour')
-    assert str(e.value) == "Character p is not in [['a', 'b', 'c', 'd', 'e'], ['f', 'g', 'h', 'i', 'j'], ['k', 'l', 'm', 'n', 'o'], ['q', 'r', 's', 't', 'u'], ['v', 'w', 'x', 'y', 'z']]"
+        _ = s.Polybe(alphabet=alphabet_removal(alphabet=ALPHABET, remove='produit'), key='hall')
+    assert str(e.value) == "alphabet length must be perfect square, got 19"
+
+
+def test_polybe_wrong_init_3():
+    with pytest.raises(ValueError) as e:
+        _ = s.Polybe(alphabet=alphabet_removal(alphabet=ALPHABET, remove='produitqwe'), key='produitqwe')
+    assert str(e.value) == "key must be in alphabet ['p', 'r', 'o', 'd', 'u', 'i', 't', 'q', 'w', 'e']"
+
+
+def test_polybe_code_0():
+    code_c = s.Polybe(key='arcenciel')
+    with pytest.raises(ValueError) as e:
+        code_c.code('pour1')
+    assert str(e.value) == "Character 1 of message not found in Polybe square [['a', 'r', 'c', 'e', 'n'], ['i', 'l', 'b', 'd', 'f'], ['g', 'h', 'j', 'k', 'm'], ['o', 'p', 'q', 's', 't'], ['u', 'v', 'x', 'y', 'z']]"
 
 
 def test_polybe_code_1():
-    code_c = s.Polybe(key='depuis')
-    assert code_c.code('bon jour') == '32 63 62 51 63 21 72 '
+    code_c = s.Polybe(key=alphabet_removal(remove='wp', alphabet=ALPHABET))
+    assert [len(row) for row in code_c.square] == [5, 5, 5, 5, 5]
+    assert code_c.code('bon jour') == '12 35 34 25 35 45 42 '
     assert code_c.alphabet == alphabet_removal('w', ALPHABET)
 
 
@@ -101,26 +114,26 @@ def test_polybe_str():
 
 
 def test_polybe_decode_0():
-    code_c = s.Polybe(key='motizngylwfhjcsxrbdkvpqaue')
+    code_c = s.Polybe(key='motizngylfhjcsxrbdkvpqaue')
     with pytest.raises(ValueError) as e:
         code_c.decode('15 41 33 24 ab')
     assert str(e.value) == 'message is not coded with classic Polybe code'
 
 
 def test_polybe_decode_1():
-    code_c = s.Polybe(key='motizngylwfhjcsxrbdkvpqaue')
+    code_c = s.Polybe(key='motizngylfhjcsxrbdkvpqaue')
     with pytest.raises(ValueError) as e:
         code_c.decode('15 41 33 24 a')
     assert str(e.value) == 'message is not coded with classic Polybe code'
 
 
 def test_polybe_decode_2():
-    code_c = s.Polybe(key='motizngylwfhjcsxrbdkvpqaue')
-    assert code_c.decode('15 41 33 24') == 'zdsw'
+    code_c = s.Polybe(key='motizngylfhjcsxrbdkvpqaue')
+    assert code_c.decode('15 41 33 24') == 'zrcl'
 
 
 def test_polybe_code_decode():
-    code_c = s.Polybe(key='motizngylwfhjcsxrbdkvpqaue')
+    code_c = s.Polybe(key='motizngylfhjcsxrbdkvpqaue')
     assert code_c.decode(code_c.code('je suis le meme')) == 'jesuislememe'
 
     assert code_c.code(code_c.decode('12 35 34 25 35 51 43 ')) == '12 35 34 25 35 51 43 '
