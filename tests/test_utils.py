@@ -24,28 +24,25 @@ def test_lower_no_space_no_duplicate():
     assert utils.lower_no_space_no_duplicate('A AzZ ') == 'az'
 
 
+def test_duplicates_0():
+    assert not utils.duplicates('')
+
+
+def test_duplicates_1():
+    assert utils.duplicates('fgfds')
+
+
 # Test Code class
 
 def test_Code_init_0():
-    c = utils.Code(key=1, alphabet='12345')
-    assert c.alphabet == '12345'
-
-
-def test_Code_init_1():
-    c = utils.Code(key='my key', alphabet='12345')
+    c = utils.Code(key='my key')
     assert c.key == 'my key'
 
 
-def test_Code_init_2():
+def test_Code_init_1():
     with pytest.raises(TypeError) as e:
         _ = utils.Code(key=None)
     assert str(e.value) == 'key None must be an int or a string'
-
-
-def test_Code_init_3():
-    with pytest.raises(ValueError) as e:
-        _ = utils.Code(key=1, alphabet='123451')
-    assert str(e.value) == "alphabet can't have duplicate"
 
 
 def test_Code_code():
@@ -71,29 +68,29 @@ def test_CodedStr_init_0():
 
 def test_CodedStr_init_1():
     with pytest.raises(TypeError) as e:
-        _ = utils.CodedStr(mes=1)
-    assert "Parameter mes 1 should be type str or list (of int and spaces), not <class 'int'>" == str(e.value)
-
-
-def test_CodedStr_init_2():
-    with pytest.raises(TypeError) as e:
         _ = utils.CodedStr(mes=[1, 2, 3, 4, None])
     assert "Parameter mes [1, 2, 3, 4, None] should be type str or list (of int and spaces), not <class 'list'>" == str(
         e.value)
 
 
-def test_CodedStr_init_3():
+def test_CodedStr_init_2():
     with pytest.raises(TypeError) as e:
         _ = utils.CodedStr(mes=['a', 'b', 'c', 'd'])
     assert "Parameter mes ['a', 'b', 'c', 'd'] should be type str or list (of int and spaces), not <class 'list'>" == str(
         e.value)
 
 
-def test_CodedStr_init_4():
+def test_CodedStr_init_3():
     with pytest.raises(ValueError) as e:
         _ = utils.CodedStr(mes='not in alphabet :/')
     assert 'One or more character(s) from "not in alphabet :/" are not in "abcdefghijklmnopqrstuvwxyz"' == str(
         e.value)
+
+
+def test_CodedStr_init_4():
+    with pytest.raises(ValueError) as e:
+        _ = utils.CodedStr(mes='message', alphabet='abcdeef')
+    assert str(e.value) == "alphabet can't have duplicate, got ['e']"
 
 
 def test_CodedStr_init_5():

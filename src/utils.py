@@ -18,8 +18,8 @@ def lower_no_space(string) -> str:
     return string.lower().replace(" ", "")
 
 
-def has_duplicate(string) -> bool:
-    return len(set(string)) != len(string)
+def duplicates(string) -> list:
+    return list(set([elem for elem in string if string.count(elem) > 1]))
 
 
 def lower_no_space_no_duplicate(string) -> str:
@@ -48,8 +48,8 @@ class CodedStr:
     """
 
     def __init__(self, mes: Union[str, list], alphabet=ALPHABET):
-        if has_duplicate(alphabet):
-            raise ValueError(f"alphabet can't have duplicate")
+        if dupl := duplicates(alphabet):
+            raise ValueError(f"alphabet can't have duplicate, got {dupl}")
         self.alphabet = alphabet
         self.cycle = len(alphabet)
         if isinstance(mes, str):

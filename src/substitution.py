@@ -37,81 +37,81 @@ class Bazaar(Code):
         return str(CodedStr([self.key.index(coded.alphabet[elem]) for elem in coded]))
 
 
-class Polybe(Code):
-    def __init__(self, key: str):
-        super().__init__(key)
-        if not isinstance(self.key, str):
-            raise TypeError(f'key {key} must be a string')
-
-        self.key = list(lower_no_space_no_duplicate(self.key))
-        len_key = len(self.key)
-        if len_key == 0:
-            raise ValueError('Key cannot be empty')
-
-    def build_square(self, message: CodedStr) -> list[list[str]]:
-        square = []
-        len_square = int(sqrt(len(message.alphabet)))
-        len_key = len(self.key)
-        for i, letter in enumerate(self.key):
-            if i % len_square == 0:
-                square.append([])
-            square[i // len_square].append(letter)
-
-        missing_letters = [c for c in message.alphabet if c not in self.key]
-        if missing_letters:
-            for i, letter in enumerate(missing_letters):
-                if (i + len_key) % len_square == 0:
-                    square.append([])
-                square[(i + len_key) // len_square].append(letter)
-
-        return square
-
-    def print_square(self, message: CodedStr) -> str:
-        output = ''
-        square = self.build_square(message)
-        for row in square:
-            for c in row:
-                output += f'{c} '
-            output += '\n'
-        return output
-
-    def code(self, message: str) -> str:
-        message_coded = CodedStr(message)
-        square = self.build_square(message_coded)
-        if sqrt(len(message_coded.alphabet)) != int(sqrt(len(message_coded.alphabet))):
-            raise ValueError(f'alphabet length must be perfect square, got {len(message_coded.alphabet)}')
-        if not set(self.key).issubset(set(message_coded.alphabet)):
-            raise ValueError(f'key must be in alphabet {[c for c in self.key if c not in message_coded.alphabet]}')
-        output = ''
-        for c in message:
-            if c == ' ':
-                pass
-            else:
-                if c not in set([elem for row in square for elem in row]):
-                    raise ValueError(f'Character {c} of message not found in Polybe square {square}')
-                for r, row in enumerate(square):
-                    for e, elem in enumerate(row):
-                        if elem == c:
-                            output += f'{r + 1}{e + 1} '
-
-        return output
-
-    def decode(self, message: str) -> str:
-        message = message.replace(" ", "")
-        message_coded = CodedStr(message)
-        square = self.build_square(message_coded)
-        if len(message_coded) % 2 != 0:
-            raise ValueError('message is not coded with classic Polybe code')
-        else:
-            output = ''
-            for x, y in zip(message_coded[::2], message_coded[1::2]):  # We iterate coordinate 2 by 2
-                try:
-                    x = int(x)
-                    y = int(y)
-                except ValueError:
-                    raise ValueError('message is not coded with classic Polybe code')
-                output += square[x-1][y-1]
-        return output
+# class Polybe(Code):
+#     def __init__(self, key: str):
+#         super().__init__(key)
+#         if not isinstance(self.key, str):
+#             raise TypeError(f'key {key} must be a string')
+#
+#         self.key = list(lower_no_space_no_duplicate(self.key))
+#         len_key = len(self.key)
+#         if len_key == 0:
+#             raise ValueError('Key cannot be empty')
+#
+#     def build_square(self, message: CodedStr) -> list[list[str]]:
+#         square = []
+#         len_square = int(sqrt(len(message.alphabet)))
+#         len_key = len(self.key)
+#         for i, letter in enumerate(self.key):
+#             if i % len_square == 0:
+#                 square.append([])
+#             square[i // len_square].append(letter)
+#
+#         missing_letters = [c for c in message.alphabet if c not in self.key]
+#         if missing_letters:
+#             for i, letter in enumerate(missing_letters):
+#                 if (i + len_key) % len_square == 0:
+#                     square.append([])
+#                 square[(i + len_key) // len_square].append(letter)
+#
+#         return square
+#
+#     def print_square(self, message: CodedStr) -> str:
+#         output = ''
+#         square = self.build_square(message)
+#         for row in square:
+#             for c in row:
+#                 output += f'{c} '
+#             output += '\n'
+#         return output
+#
+#     def code(self, message: str) -> str:
+#         message_coded = CodedStr(message)
+#         square = self.build_square(message_coded)
+#         if sqrt(len(message_coded.alphabet)) != int(sqrt(len(message_coded.alphabet))):
+#             raise ValueError(f'alphabet length must be perfect square, got {len(message_coded.alphabet)}')
+#         if not set(self.key).issubset(set(message_coded.alphabet)):
+#             raise ValueError(f'key must be in alphabet {[c for c in self.key if c not in message_coded.alphabet]}')
+#         output = ''
+#         for c in message:
+#             if c == ' ':
+#                 pass
+#             else:
+#                 if c not in set([elem for row in square for elem in row]):
+#                     raise ValueError(f'Character {c} of message not found in Polybe square {square}')
+#                 for r, row in enumerate(square):
+#                     for e, elem in enumerate(row):
+#                         if elem == c:
+#                             output += f'{r + 1}{e + 1} '
+#
+#         return output
+#
+#     def decode(self, message: str) -> str:
+#         message = message.replace(" ", "")
+#         message_coded = CodedStr(message)
+#         square = self.build_square(message_coded)
+#         if len(message_coded) % 2 != 0:
+#             raise ValueError('message is not coded with classic Polybe code')
+#         else:
+#             output = ''
+#             for x, y in zip(message_coded[::2], message_coded[1::2]):  # We iterate coordinate 2 by 2
+#                 try:
+#                     x = int(x)
+#                     y = int(y)
+#                 except ValueError:
+#                     raise ValueError('message is not coded with classic Polybe code')
+#                 output += square[x-1][y-1]
+#         return output
 
 
 class Vigenere(Code):
