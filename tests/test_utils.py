@@ -92,7 +92,7 @@ def test_CodedStr_init_3():
 def test_CodedStr_init_4():
     with pytest.raises(ValueError) as e:
         _ = utils.CodedStr(mes='not in alphabet :/')
-    assert 'One or more character(s) from [not in alphabet :/] are not in [abcdefghijklmnopqrstuvwxyz]' == str(
+    assert 'One or more character(s) from "not in alphabet :/" are not in "abcdefghijklmnopqrstuvwxyz"' == str(
         e.value)
 
 

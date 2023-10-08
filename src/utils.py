@@ -28,10 +28,7 @@ def lower_no_space_no_duplicate(string) -> str:
 
 
 class Code:
-    def __init__(self, key: Union[str, int], alphabet: str = ALPHABET):
-        if has_duplicate(alphabet):
-            raise ValueError(f"alphabet can't have duplicate")
-        self.alphabet = alphabet
+    def __init__(self, key: Union[str, int]):
         if isinstance(key, int) or isinstance(key, str):
             self.key = key
         else:
@@ -51,13 +48,15 @@ class CodedStr:
     """
 
     def __init__(self, mes: Union[str, list], alphabet=ALPHABET):
+        if has_duplicate(alphabet):
+            raise ValueError(f"alphabet can't have duplicate")
         self.alphabet = alphabet
         self.cycle = len(alphabet)
         if isinstance(mes, str):
             try:
-                self.mes = [' ' if c == ' ' else alphabet.index(c) for c in mes]
+                self.mes = [' ' if c == ' ' else self.alphabet.index(c) for c in mes]
             except ValueError:
-                raise ValueError(f'One or more character(s) from [{mes}] are not in [{alphabet}]')
+                raise ValueError(f'One or more character(s) from "{mes}" are not in "{self.alphabet}"')
 
         elif isinstance(mes, Iterable) and all([((type(c) == int) or (c == ' ')) for c in mes]):
             # E.g. If mes is 48, it gets transformed in 22 = 48 - 26
